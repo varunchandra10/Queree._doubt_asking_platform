@@ -31,7 +31,7 @@ const QuestionDetails = () => {
     onConfirm: null
   });
 
-  const url = 'https://stackoverflow-g6az.onrender.com';
+  const url = 'https://queree-doubt-asking-platform.onrender.com';
 
   const handlePostAns = (e, answerLength) => {
     e.preventDefault();
