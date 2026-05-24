@@ -1,0 +1,33 @@
+{
+  "name": "stackoverflow_server",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "Varun Chandra",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test:apis": "node scripts/test-all-apis.js"
+  },
+  "dependencies": {
+    "@google/genai": "^2.6.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cloudinary": "^2.10.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.4.1",
+    "multer": "^2.1.1",
+    "nodemailer": "^8.0.7",
+    "nodemon": "^2.0.22",
+    "razorpay": "^2.9.0",
+    "streamifier": "^0.1.1",
+    "uuid": "^9.0.0"
+  },
+  "engines": {
+    "node": ">=14.20.1"
+  }
+}

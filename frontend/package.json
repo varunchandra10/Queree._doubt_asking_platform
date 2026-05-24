@@ -1,0 +1,53 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug"
+  },
+  "dependencies": {
+    "@chatscope/chat-ui-kit-react": "^2.1.1",
+    "@chatscope/chat-ui-kit-styles": "^1.4.0",
+    "@tailwindcss/vite": "^4.3.0",
+    "axios": "^1.16.1",
+    "copy-to-clipboard": "^4.0.2",
+    "firebase": "^12.13.0",
+    "jwt-decode": "^4.0.0",
+    "lucide-react": "^1.16.0",
+    "moment": "^2.30.1",
+    "otp-input-react": "^0.3.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-hot-toast": "^2.6.0",
+    "react-icons": "^5.6.0",
+    "react-phone-input-2": "^2.15.1",
+    "react-redux": "^9.3.0",
+    "react-router-dom": "^7.15.1",
+    "redux": "^5.0.1",
+    "redux-thunk": "^3.1.0",
+    "tailwindcss": "^4.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@eslint/js": "^10.0.1",
+    "@rolldown/plugin-babel": "^0.2.3",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "@playwright/test": "^1.55.0",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "eslint": "^10.3.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.6.0",
+    "vite": "^8.0.12"
+  }
+}
