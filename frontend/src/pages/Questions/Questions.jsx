@@ -1,6 +1,6 @@
 import React from 'react'
 import RightSidebar from '../../components/RightSidebar/RightSidebar'
-import HomeMainbar from '../../components/HomeMainbar/HomeMainbar'
+import HomeMainbar from '../../components/Homemainbar/Homemainbar'
 
 const Questions = () => {
   return (
