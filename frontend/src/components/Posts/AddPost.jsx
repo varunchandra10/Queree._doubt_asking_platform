@@ -1,10 +1,8 @@
 import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addPost } from '../../actions/posts';
 import AlertBox from '../../components/AlertBox'; // Integrated your application's custom alert system
 import { uploadPostMedia } from '../../api';
-import { Share } from 'lucide-react';
 
 const uploadToCloudinary = async (file) => {
   const formData = new FormData();
@@ -14,7 +12,6 @@ const uploadToCloudinary = async (file) => {
 };
 
 const AddPost = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   
   const User = useSelector((state) => state.currentUserReducer);
@@ -107,9 +104,10 @@ const AddPost = () => {
         })
         .catch((error) => {
           console.error('Cloudinary upload error:', error);
+          const serverMessage = error?.response?.data?.message;
           setAlertConfig({
             isOpen: true,
-            message: error.message || 'Failed to map media nodes to the Cloudinary storage pipeline.'
+            message: serverMessage || error.message || 'Failed to map media nodes to the Cloudinary storage pipeline.'
           });
         })
         .finally(() => {

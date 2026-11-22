@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const API = axios.create({baseURL: 'https://queree-doubt-asking-platform.onrender.com'});
-//  const API = axios.create({baseURL: 'http://localhost:5000/'});
+const backendBaseURL = import.meta.env.VITE_BACKEND_URL || 'https://queree-doubt-asking-platform.onrender.com';
+const API = axios.create({ baseURL: backendBaseURL });
 
 API.interceptors.request.use((req) => {
     if(localStorage.getItem("Profile")){
@@ -38,7 +38,7 @@ export const deleteAnswer = (id, answerId, noOfAnswers) => API.patch(`/answer/de
 // =========================================== Users page =====================================================================================================
 export const fetchAllUsers = () => API.get('/user/getAllUsers');
 export const updateProfile = (id, updateData) => API.patch(`/user/update/${id}`, updateData);
-export const uploadProfileImage = (formData) => API.post('/user/upload-profile', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+export const uploadProfileImage = (formData) => API.post('/user/upload-profile', formData);
 
 // ================================================= Add/Remove Friends ======================================================================
 export const addFriend = (id, userId) => API.patch('/user/friend', { id, userId });
@@ -48,7 +48,7 @@ export const removeFriend = (id, userId) => API.patch('/user/unfriend', { id, us
 export const getPosts = () => API.get('/post/get');
 export const getUserPosts = (id) => API.get(`/post/user-posts/${id}`);
 export const addPost = (data) => API.post('/post/add', data );
-export const uploadPostMedia = (formData) => API.post('/post/upload-media', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+export const uploadPostMedia = (formData) => API.post('/post/upload-media', formData);
 export const likePost = (id, userId) => API.patch(`/post/like/${id}`, { userId });
 export const dislikePost = (id, userId) => API.patch(`/post/dislike/${id}`, { userId });
 

@@ -1,6 +1,5 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
-import { BsCheckCircleFill } from 'react-icons/bs';
 
 import HomeMainbar from '../components/Homemainbar/Homemainbar';
 import RightSidebar from '../components/RightSidebar/RightSidebar';

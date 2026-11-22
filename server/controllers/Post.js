@@ -1,3 +1,4 @@
+import '../loadEnv.js';
 import Post from "../models/Post.js";
 import mongoose from "mongoose";
 import cloudinary from 'cloudinary';
@@ -51,6 +52,12 @@ export const addPost = async (req,res) => {
         return res.status(500).json({ message: 'Cloudinary not configured on the server.' });
       }
 
+      cloudinary.v2.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+      });
+
       const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'video/mp4', 'video/webm', 'video/quicktime'];
       if (!allowedTypes.includes(req.file.mimetype)) {
         return res.status(400).json({ message: 'Invalid file type. Allowed: jpg, png, webp, gif, mp4, webm, mov' });
@@ -81,45 +88,50 @@ export const addPost = async (req,res) => {
   }
 
 export const likePost = async (req, res) => {
-    console.log(req.body.userId)
-    try{
+    const userId = req.userId || req.body.userId;
+    try {
         const post = await Post.findById(req.params.id);
-        if(!post) res.status(500).json("Post not found!!!");
+        if (!post) {
+            return res.status(404).json({ message: "Post not found!" });
+        }
 
         const newPost = await Post.findByIdAndUpdate(
             req.params.id,
             {
-                $addToSet: { likes: req.body.userId }
+                $addToSet: { likes: userId }
             },
             { new: true }
         );
-        res.status(200).json(newPost); 
+        return res.status(200).json(newPost); 
     } catch (err) {
-        console.log(err);
-        res.status(500).json(err);
+        console.error(err);
+        return res.status(500).json({ message: err.message || "Failed to like post" });
     }
 }
 
-export const dislikePost = async (req,res) => {
-    try{
-        // console.log(req.userId)
+export const dislikePost = async (req, res) => {
+    const userId = req.userId || req.body.userId;
+    try {
         const post = await Post.findByIdAndUpdate(
             req.params.id,
             {
-                $pull: { likes: req.body.userId},
+                $pull: { likes: userId },
             }, 
             { new: true }
-        )
-        res.status(200).json(post);
+        );
+        if (!post) {
+            return res.status(404).json({ message: "Post not found!" });
+        }
+        return res.status(200).json(post);
     } catch (err) {
-        console.log(err);
-        res.status(500).json(err);
+        console.error(err);
+        return res.status(500).json({ message: err.message || "Failed to dislike post" });
     }
 }
 
-
 export const addComment = async (req, res) => {
-    const { postId,userId, content,name } = req.body;
+    const postId = req.params.id || req.body.postId;
+    const { userId, content, name } = req.body;
   
     try {
       const post = await Post.findById(postId);
@@ -129,7 +141,7 @@ export const addComment = async (req, res) => {
   
       const newComment = {
         commentId: new mongoose.Types.ObjectId(),
-        userId,
+        userId: userId || req.userId,
         content,
         name,
         createdAt: new Date(),
@@ -146,7 +158,8 @@ export const addComment = async (req, res) => {
   };
   
   export const deleteComment = async (req, res) => {
-    const { postId, commentId } = req.body;
+    const postId = req.params.id || req.body.postId;
+    const { commentId } = req.body;
   
     try {
       const post = await Post.findById(postId);

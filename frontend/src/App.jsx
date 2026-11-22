@@ -24,6 +24,11 @@ const AppShell = () => {
   // Single, unified source of truth for the mobile layout state
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [prevPathname, setPrevPathname] = useState(location.pathname);
+  if (prevPathname !== location.pathname) {
+    setPrevPathname(location.pathname);
+    setIsChatOpen(false);
+  }
   const [alertConfig, setAlertConfig] = useState({
     isOpen: false,
     message: '',
@@ -46,10 +51,6 @@ const AppShell = () => {
       dispatch(checkSubscription(userId));
     }
   }, [dispatch, userId])
-
-  useEffect(() => {
-    setIsChatOpen(false);
-  }, [location.pathname]);
 
   useEffect(() => {
     const handleAppAlert = (event) => {

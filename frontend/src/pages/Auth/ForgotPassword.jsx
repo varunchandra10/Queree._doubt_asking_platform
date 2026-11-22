@@ -50,7 +50,6 @@ const ForgotPassword = () => {
   useEffect(() => {
     if (step !== 2) return;
 
-    setOtpExpiresIn(OTP_SECONDS);
     const timer = window.setInterval(() => {
       setOtpExpiresIn((current) => {
         if (current <= 1) {

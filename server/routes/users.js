@@ -1,6 +1,14 @@
 import express from 'express';
 
-import { signup, login, sendOtp, verifyOtp } from '../controllers/auth.js';
+import {
+	signup,
+	login,
+	sendOtp,
+	verifyOtp,
+	forgotPassword,
+	verifyForgotPasswordOtp,
+	resetPassword,
+} from '../controllers/auth.js';
 import { getAllUsers, updateProfile, follow, unfollow, uploadProfileImage } from '../controllers/users.js';
 import auth from '../middleware/auth.js';
 import multer from 'multer';
@@ -14,6 +22,9 @@ router.post('/signup', signup)
 router.post('/login', login)
 router.post('/send-otp', sendOtp)
 router.post('/verify-otp', verifyOtp)
+router.post('/forgot-password', forgotPassword)
+router.post('/forgot-password/verify-otp', verifyForgotPasswordOtp)
+router.post('/forgot-password/reset-password', resetPassword)
 
 router.get('/getAllUsers', getAllUsers)
 router.patch('/update/:id', auth, updateProfile)

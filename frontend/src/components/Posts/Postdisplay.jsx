@@ -35,14 +35,14 @@ const Postdisplay = () => {
       ) : (
         /* Clean Map Render List Stack Layout */
         <div className="flex flex-col gap-4">
-          {postsList.map((post) => {
+          {postsList.map((post, index) => {
             // Find the dynamic real-time account data using the post's author ID reference
             const postAuthor = usersList.find((u) => u._id === post?.userId);
             const liveProfileImage = postAuthor?.profileImage || post?.profileImage;
 
             return (
               <Post 
-                key={post._id || Math.random()} 
+                key={post._id || index} 
                 post={post} 
                 profileImage={liveProfileImage} // Injects the live profile picture straight down to the Post component
               />

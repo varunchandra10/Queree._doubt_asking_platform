@@ -1,5 +1,4 @@
 import React from 'react'
-import LeftSidebar from '../../components/Leftsidebar'
 import RightSidebar from '../../components/RightSidebar/RightSidebar'
 import QuestionDetails from './QuestionsDetails'
 

@@ -1,10 +1,8 @@
+import '../loadEnv.js';
 import mongoose from 'mongoose'
 import User from '../models/auth.js'
-import dotenv from 'dotenv';
 import cloudinary from 'cloudinary';
 import streamifier from 'streamifier';
-
-dotenv.config();
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -103,6 +101,12 @@ export const uploadProfileImage = async (req, res) => {
             console.error('Cloudinary credentials missing');
             return res.status(500).json({ message: 'Cloudinary not configured. Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET in server .env' });
         }
+
+        cloudinary.v2.config({
+            cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+            api_key: process.env.CLOUDINARY_API_KEY,
+            api_secret: process.env.CLOUDINARY_API_SECRET,
+        });
         // Validate file type and size (max 5MB)
         const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
         if (!allowedTypes.includes(req.file.mimetype)) {
@@ -123,6 +127,9 @@ export const uploadProfileImage = async (req, res) => {
         });
 
         const updatedUser = await User.findByIdAndUpdate(userId, { $set: { profileImage: uploadResult.secure_url } }, { new: true });
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User profile not found in database to update.' });
+        }
         res.status(200).json({ success: true, result: updatedUser });
     } catch (err) {
         console.error('uploadProfileImage error', err);

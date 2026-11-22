@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import Avatar from '../Avatar';
@@ -11,20 +11,12 @@ const Post = ({ post, profileImage }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const url = window.location.href + `/${post._id}`;
+  const url = `${window.location.origin}/Community/${post._id}`;
 
-  const [isLiked, setIsLiked] = useState(false);
+  const isLiked = Boolean(post?.likes?.includes(User?.result?._id));
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [comment, setComment] = useState('');
   const [showFullDescription, setShowFullDescription] = useState(false);
-
-  useEffect(() => {
-    if (post?.likes?.includes(User?.result?._id)) {
-      setIsLiked(true);
-    } else {
-      setIsLiked(false);
-    }
-  }, [post?.likes, User]);
 
   const handleLike = () => {
     if (!User) {

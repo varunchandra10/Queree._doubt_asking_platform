@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
@@ -17,7 +17,6 @@ const UserProfile = () => {
   const dispatch = useDispatch();
 
   const [Switch, setSwitch] = useState(false);
-  const [isFriend, setIsFriend] = useState(false);
   const color = useRandomColor();
 
   // Dialog / Warning Banner State Machine
@@ -39,11 +38,9 @@ const UserProfile = () => {
     (user) => user._id === currentUser?.result?._id
   )?.friends;
 
-  useEffect(() => {
-    if (currentUser && currentUserFriends && currentProfile) {
-      setIsFriend(currentUserFriends.includes(currentProfile._id));
-    }
-  }, [currentUserFriends, currentUser, currentProfile]);
+  const isFriend = Boolean(
+    currentUser && currentUserFriends && currentProfile && currentUserFriends.includes(currentProfile._id)
+  );
 
   const handleAddFriend = () => {
     if (!currentUser) {

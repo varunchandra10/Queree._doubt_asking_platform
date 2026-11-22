@@ -1,23 +1,20 @@
+import '../loadEnv.js';
 import { GoogleGenAI } from '@google/genai';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-const GEMINI_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
-
-// FIX 1: Pass your Google Cloud project ID so your account-bound key is accepted
-const aiClient = new GoogleGenAI({ 
-  apiKey: GEMINI_KEY,
-  projectId: 'gen-lang-client-0839022398' 
-});
 
 export const proxyGemini = async (req, res) => {
   try {
     const { message } = req.body;
     if (!message) return res.status(400).json({ error: 'Missing message in request body.' });
 
+    const GEMINI_KEY = process.env.GEMINI_API_KEY;
+    const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+
     if (!GEMINI_KEY) return res.status(500).json({ error: 'Server misconfigured: missing GEMINI_API_KEY' });
+
+    const aiClient = new GoogleGenAI({ 
+      apiKey: GEMINI_KEY,
+      projectId: 'gen-lang-client-0839022398' 
+    });
 
     const prompt = message;
 

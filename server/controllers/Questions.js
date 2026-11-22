@@ -4,8 +4,8 @@ import mongoose from 'mongoose'
 // ======================================  ASK QUESTION =========================================
 export const AskQuestion = async (req, res) => {
     const postQuestionData = req.body;
-    const userId = req.userId;
-    const postQuestion = new Questions(postQuestionData, userId);
+    const userId = req.userId || postQuestionData.userId;
+    const postQuestion = new Questions({ ...postQuestionData, userId });
     try{
         await postQuestion.save();
         res.status(200).json("Posted a question successfully");
@@ -34,7 +34,7 @@ export const deleteQuestion = async ( req, res)=> {
         return res.status(404).send('question unavailable...');
     }
     try{
-        await Questions.findByIdAndRemove(_id);
+        await Questions.findByIdAndDelete(_id);
         res.status(200).json({message:"successfully deleted..."});
     }catch(error){
         res.status(404).json({message:error.message});
@@ -69,7 +69,7 @@ export const voteQuestion = async (req,res) => {
             if(upIndex !== -1){
                 question.upVote = question.upVote.filter((id) => id !== String(userId));
             }
-            if(upIndex === -1){
+            if(downIndex === -1){
                 question.downVote.push(userId);
             }else{
                 question.downVote = question.downVote.filter((id) => id !== String(userId));

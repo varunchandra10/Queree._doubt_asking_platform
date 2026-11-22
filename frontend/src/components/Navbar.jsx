@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentUser } from '../actions/currentUser';
@@ -28,11 +28,11 @@ const Navbar = ({ onToggleSidebar }) => {
     }
   }, [darkMode]);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     dispatch({ type: 'LOGOUT' });
     dispatch(setCurrentUser(null));
     navigate('/');
-  };
+  }, [dispatch, navigate]);
 
   // JWT Lifespan Token Guardian
   useEffect(() => {
@@ -43,7 +43,7 @@ const Navbar = ({ onToggleSidebar }) => {
         handleLogout();
       }
     }
-  }, [User?.token, dispatch]);
+  }, [User?.token, handleLogout]);
 
   useEffect(() => {
     const storedProfile = localStorage.getItem('Profile');

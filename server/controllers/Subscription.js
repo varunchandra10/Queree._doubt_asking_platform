@@ -1,14 +1,18 @@
+import '../loadEnv.js';
 import Razorpay from 'razorpay'
-import dotenv from 'dotenv';
 import crypto from 'crypto';
 import users from '../models/auth.js';
 
-dotenv.config();
-
-const razorpay = new Razorpay({
-    key_id: process.env.KEY_ID,
-    key_secret: process.env.KEY_SECRET,
-})
+let razorpayInstance = null;
+const getRazorpay = () => {
+    if (!razorpayInstance && process.env.KEY_ID && process.env.KEY_SECRET) {
+        razorpayInstance = new Razorpay({
+            key_id: process.env.KEY_ID,
+            key_secret: process.env.KEY_SECRET,
+        });
+    }
+    return razorpayInstance;
+};
 
 export const order = async (req,res) => {
     let options = {
@@ -18,6 +22,10 @@ export const order = async (req,res) => {
     };
 
     try {
+        const razorpay = getRazorpay();
+        if (!razorpay) {
+            return res.status(500).json({ error: "Razorpay credentials not configured." });
+        }
         const order = await razorpay.orders.create(options);
         console.log(order);
         res.json({

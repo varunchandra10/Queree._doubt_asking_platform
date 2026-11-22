@@ -31,8 +31,6 @@ const QuestionDetails = () => {
     onConfirm: null
   });
 
-  const url = 'https://queree-doubt-asking-platform.onrender.com';
-
   const handlePostAns = (e, answerLength) => {
     e.preventDefault();
     if (User === null) {
@@ -67,7 +65,7 @@ const QuestionDetails = () => {
   };
 
   const handleShare = () => {
-    copy(url + location.pathname);
+    copy(`${window.location.origin}${location.pathname}`);
     setAlertConfig({
       isOpen: true,
       message: 'Share link successfully copied to your system clipboard.',
